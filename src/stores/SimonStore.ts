@@ -2,8 +2,9 @@ import { defineStore } from "pinia";
 import {useUserStore} from "@/stores/UserStore";
 
 interface SimonInterface{
-    title: string,
+    life: number,
     score: number,
+    ready: boolean,
     timer: number,
     sequence: any,
     tmp: any,
@@ -13,8 +14,9 @@ interface SimonInterface{
     basGauche : boolean,
     basDroit : boolean,
     basMilieu : boolean,
-    msg_demo : boolean,
-    help:boolean
+    canHelp: boolean,
+    playingSequence: boolean,
+    endGame: boolean
 }
 
 const squareMapping = ["hautGauche","hautMilieu","hautDroit","basGauche","basMilieu","basDroit"]
@@ -22,8 +24,9 @@ const squareMapping = ["hautGauche","hautMilieu","hautDroit","basGauche","basMil
 
 export const useSimonStore = defineStore("simonStore",{
     state: (): SimonInterface => ({
-        title: "Jeu de Simon",
+        life: 9,
         score: 0,
+        ready: false,
         timer: 500,
         sequence : [],
         tmp: [],
@@ -33,62 +36,90 @@ export const useSimonStore = defineStore("simonStore",{
         basGauche : false,
         basDroit : false,
         basMilieu : false,
-        msg_demo: false,
-        help: false
+        canHelp: false,
+        playingSequence: false,
+        endGame: false
     }),
     actions: {
         newGame(){
+            const userStore = useUserStore()
+            userStore.sendMessage("C'est partie !", "success")
+            this.ready = true
             this.sequence = [];
             this.nextTurn();
         },
         nextTurn(){
             this.addElementToSequence();
             this.allGray();
-            console.log(this.tmp)
             this.playSequence(this.tmp[0]);
         },
         addElementToSequence(){
-            this.score > 5 ? this.timer = 350 : this.timer = 500;
+            this.goUpdateSpeed()
             this.score = this.sequence.length;
             const random = Math.floor(Math.random() * squareMapping.length);
             this.sequence.push(squareMapping[random]);
-            this.tmp = this.tmp.slice();
+            this.tmp = this.sequence.slice();
         },
         allGray(){
             squareMapping.forEach(e => {
                 //@ts-ignore
-                return this[e] = false;
+                this[e] = false;
             })
         },
         playSequence(instruction: string){
-            this.msg_demo = true
+            this.playingSequence = true
             //@ts-ignore
             this[instruction] = true
-            setTimeout(()=>{
+            setTimeout(()=>
+            {
                 this.allGray()
                 this.tmp.shift()
                 if (this.tmp[0]){
                     setTimeout(()=> {this.playSequence(this.tmp[0])} , this.timer)
                 }else{
                     this.tmp = this.sequence.slice()
-                    this.msg_demo = false
+                    this.playingSequence = false
                 }
             },this.timer)
         },
         selectSquare(instruction: string){
-            if(instruction === this.tmp[0]){
-                //@ts-ignore
-                this[instruction] = true
-                setTimeout(()=>{
-                    this.allGray()
-                    this.tmp.shift()
-                    if (!this.tmp[0]){
-                        setTimeout(() => (this.nextTurn()), 200)
-                    }
-                }, this.timer)
+            if (this.ready && !this.playingSequence){
+                if(instruction === this.tmp[0]){
+                    //@ts-ignore
+                    this[instruction] = true
+                    setTimeout(()=>{
+                        this.allGray()
+                        this.tmp.shift()
+                        if (!this.tmp[0]){
+                            setTimeout(() => (this.nextTurn()), 1000)
+                        }
+                    }, 100)
+                }else{
+
+                    this.lostGame()
+                }
             }else{
-                const userStore = useUserStore()
-                userStore.sendMessage("Hoops", "warning")
+                if (!this.ready){
+                    const userStore = useUserStore()
+                    userStore.sendMessage("Click on ready button", "warning")
+                }
+            }
+        },
+        lostGame(){
+            const userStore = useUserStore()
+            if (this.life === 0){
+                this.endGame = true
+            }else{
+                this.life -= 1
+                userStore.sendMessage(`Hoops ! il vous reste ${this.life} vie(s)`, "warning")
+            }
+        },
+        goUpdateSpeed(){
+            if (this.score > 5){
+                this.timer = this.timer * 0.95
+            }
+            if (this.score > 10){
+                this.timer = this.timer * 0.8
             }
         }
     }

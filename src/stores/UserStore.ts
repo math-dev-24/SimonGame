@@ -11,17 +11,15 @@ interface PopPupInterface{
 }
 
 interface userStore{
-    list_pop : PopPupInterface[],
-    difficulty:DifficultyMode,
-    goGame: boolean
+    list_pop: PopPupInterface[],
+    difficulty: DifficultyMode
 }
 
 
 export const useUserStore = defineStore("userStore", {
     state: (): userStore => ({
         list_pop: [],
-        difficulty: "Novice",
-        goGame: false
+        difficulty: "Normal"
     }),
     actions: {
         sendMessage(msg: string, style : StylePop){

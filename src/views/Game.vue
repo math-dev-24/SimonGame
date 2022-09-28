@@ -1,68 +1,110 @@
 <script setup lang="ts">
-
-import {useSimonStore} from "@/stores/simonStore";
-
+import {useSimonStore} from "@/stores/SimonStore";
+import {useUserStore} from "@/stores/UserStore";
+import {DIFFICULTY_TABLE} from "@/data/dataGame";
+import {onMounted} from "vue";
+import EndGame from "@/components/EndGame.vue";
+import {useRouter} from "vue-router";
 const simonStore = useSimonStore()
+const userStore = useUserStore()
+const router = useRouter()
+
+onMounted(() => {
+  const life: number = DIFFICULTY_TABLE[userStore.difficulty].life
+  const canHelp: boolean = DIFFICULTY_TABLE[userStore.difficulty].canHelp
+  const timer: number = DIFFICULTY_TABLE[userStore.difficulty].timer
+  simonStore.$reset()
+  simonStore.life = life
+  simonStore.canHelp = canHelp
+  simonStore.timer = timer
+})
+
+function goRestartGame(){
+  const life: number = DIFFICULTY_TABLE[userStore.difficulty].life
+  simonStore.endGame = false
+  simonStore.score = 0
+  simonStore.ready = false
+  simonStore.life = life
+}
+
+function goChangeDifficulty(){
+  userStore.list_pop = []
+  router.push("/")
+}
 
 </script>
 
 
 <template>
   <div>
-    <h1 class="font-bold text-2xl">{{simonStore.title}}</h1>
-    <div>
-      <div class="btnNew" @click="simonStore.newGame()">Nouvelle partie</div>
-      <div class="score">Votre score : {{simonStore.score}}</div>
-      <div>
-        <div v-if="simonStore.msg_demo">Démonstration :</div>
-        <div v-else>C'est à vous !</div>
+    <div class="flex w-full flex-col md:flex-row content-between items-center p-2 md:p-0">
+      <router-link
+          to="/"
+          class="w-full flex-1 m-2 p-2 bg-indigo-700 dark:bg-indigo-900 hover:bg-indigo-600 dark:hover:bg-indigo-800 text-white rounded-md block transition duration-300 m-auto text-center"
+      >
+        Changer difficulté
+      </router-link>
+      <div
+          class="w-full flex-1 m-2 p-2 bg-indigo-700 dark:bg-indigo-900 hover:bg-indigo-600 dark:hover:bg-indigo-800 text-white cursor-pointer rounded-md m-auto transition duration-300 text-center"
+          v-if="!simonStore.ready"
+          @click="simonStore.newGame()"
+      >
+        Je suis prêt !
       </div>
+    </div>
 
+    <div class="score">Votre score : {{simonStore.score}}</div>
+    <div>Mode : {{userStore.difficulty}}</div>
+    <div>Vous avez {{simonStore.life}} {{simonStore.life < 2 ? "vie": "vies"}}</div>
+    <div class="text-3xl text-center p-4 uppercase font-bold">
+      <div v-if="simonStore.playingSequence">Regarder bien !</div>
+      <div v-if="!simonStore.playingSequence && simonStore.ready">Jouez !</div>
+    </div>
+    <div v-if="simonStore.canHelp" class="cursor-pointer p-2 bg-indigo-700 text-white">Aidez-moi</div>
+
+    <div class="m-auto">
       <div class="flex">
         <div
             @click="simonStore.selectSquare('hautGauche')"
-            class="w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 shadow-blue-300 shadow border-indigo-200 border-2 m-2"
-            :class="{'bg-emerald-700' : simonStore.hautGauche}"
+            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            :class="{'bg-emerald-700' : simonStore.hautGauche, 'dark:bg-emerald-800' : simonStore.hautGauche}"
         ></div>
         <div
             @click="simonStore.selectSquare('hautMilieu')"
-            class="w-14 md:w-28 lg:w-40 h-14 md:h-28 lg:h-40 bg-slate-300 shadow-blue-300 shadow border-indigo-200 border-2 m-2"
-            :class="{bleu : simonStore.hautMilieu}"
+            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            :class="{'bg-sky-600' : simonStore.hautMilieu, 'dark:bg-sky-800' : simonStore.hautMilieu}"
         ></div>
         <div
             @click="simonStore.selectSquare('hautDroit')"
-            class="w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 shadow-blue-300 shadow border-indigo-200 border-2 m-2"
-            :class="{bleu : simonStore.hautDroit}"
+            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            :class="{'bg-indigo-700' : simonStore.hautDroit, 'dark:bg-indigo-800' : simonStore.hautDroit}"
         ></div>
       </div>
-      <div class="flex">
+      <div class="flex m-auto">
         <div
             @click="simonStore.selectSquare('basGauche')"
-            class="w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 shadow-blue-300 shadow border-indigo-200 border-2 m-2"
-            :class="{bleu : simonStore.basGauche}"
+            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            :class="{'bg-amber-600' : simonStore.basGauche, 'dark:bg-amber-800' : simonStore.basGauche}"
         ></div>
         <div
             @click="simonStore.selectSquare('basMilieu')"
-            class="w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 shadow-blue-300 shadow border-indigo-200 border-2 m-2"
-            :class="{bleu : simonStore.basMilieu}"
+            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            :class="{'bg-red-600' : simonStore.basMilieu, 'dark:bg-red-800' : simonStore.basMilieu}"
         ></div>
         <div
             @click="simonStore.selectSquare('basDroit')"
-            class="w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 shadow-blue-300 shadow border-indigo-200 border-2 m-2"
-            :class="{bleu : simonStore.basDroit}"
+            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            :class="{'bg-lime-600' : simonStore.basDroit, 'dark:bg-lime-800' : simonStore.basDroit}"
         ></div>
       </div>
-      <div
-          @mouseleave="simonStore.help = false"
-          class="bg-black text-white font-bold"
-      >
-        <div @mouseover="simonStore.help = true">Un peu d'aide ?</div>
-        <TransitionGroup>
-          <div v-if="simonStore.help" v-for="(seq,index) in simonStore.sequence" :key="index">
-            {{index+1}} -> {{seq}}
-          </div>
-        </TransitionGroup>
-      </div>
+    </div>
+    <div v-if="simonStore.endGame">
+      <EndGame :score="simonStore.score" @go-restart="goRestartGame" @go-change-difficulty="goChangeDifficulty"/>
     </div>
   </div>
 </template>
+
+<style scoped lang="sass">
+
+
+</style>

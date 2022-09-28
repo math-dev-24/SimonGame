@@ -16,6 +16,11 @@ const router = createRouter({
     },
     {
       path: "/simon-game-play",
+      beforeEnter: (to, from) => {
+       if(from.path === "/"){
+         return from.path
+       }
+      },
       component: () => import("@/views/Game.vue")
     },
     {

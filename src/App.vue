@@ -1,13 +1,19 @@
-<template>
-  <h1 class="text-center font-bold text-2xl my-3">Jeu de simon</h1>
+<script setup lang="ts">
+import ListPop from "@/components/ListPop.vue"
+</script>
 
-  <router-view v-slot="{ Component, route }">
-    <Transition name="page" mode="out-in" appear>
-      <div :key="route.name" class="container m-auto">
-        <component :is="Component" />
-      </div>
-    </Transition>
-  </router-view>
+<template>
+  <div class="bg-slate-100 dark:bg-slate-800 w-full min-h-screen text-black dark:text-white">
+    <h1 class="text-center py-6 font-bold text-2xl uppercase">Jeu de simon</h1>
+    <router-view v-slot="{ Component, route }">
+      <Transition name="page" mode="out-in" appear>
+        <div :key="route.name" class="container m-auto">
+          <component :is="Component" />
+        </div>
+      </Transition>
+    </router-view>
+    <ListPop></ListPop>
+  </div>
 </template>
 
 
@@ -23,4 +29,6 @@
 .page-leave-to
   transform: translateX(20px)
   opacity: 0
+
+
 </style>
