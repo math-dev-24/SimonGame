@@ -91,6 +91,8 @@ export const useSimonStore = defineStore("simonStore",{
                         this.allGray()
                         this.tmp.shift()
                         if (!this.tmp[0]){
+                            const userStore = useUserStore()
+                            userStore.sendMessage("Bravo :) ", "success")
                             setTimeout(() => (this.nextTurn()), 1000)
                         }
                     }, 100)
@@ -104,6 +106,14 @@ export const useSimonStore = defineStore("simonStore",{
                     userStore.sendMessage("Click on ready button", "warning")
                 }
             }
+        },
+        helpGame(){
+            console.log(this.tmp[0])
+            //@ts-ignore
+            this[this.tmp[0]] = true
+            setTimeout(()=> {
+                this.allGray()
+            }, 400)
         },
         lostGame(){
             const userStore = useUserStore()
@@ -121,6 +131,6 @@ export const useSimonStore = defineStore("simonStore",{
             if (this.score > 10){
                 this.timer = this.timer * 0.8
             }
-        }
+        },
     }
 })

@@ -8,8 +8,8 @@ const userStore = useUserStore()
 
 <template>
   <Teleport to="body">
-    <TransitionGroup tag="div" name="list" class="fixed z-30 bottom-1 right-1 flex flex-col w-full">
-      <div v-for="(msg,index) in userStore.list_pop" :key="index" class="border-1 border-emerald-900 text-white p-4 font-bold bg-emerald-500 w-2/3 m-auto my-1 rounded-md text-center">
+    <TransitionGroup tag="div" name="list" class="fixed z-30 bottom-1 left-1 flex flex-col w-full">
+      <div v-for="(msg,index) in userStore.list_pop" :key="index" class="border-1 border-emerald-900 text-white p-4 font-bold bg-emerald-500 w-2/3 sm:w-1/4 my-1 rounded-md text-center">
         {{msg.text}}
       </div>
     </TransitionGroup>

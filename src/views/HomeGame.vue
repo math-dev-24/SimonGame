@@ -32,4 +32,5 @@ const modalHelp = ref<boolean>(false)
       <RegleGame @go-close="modalHelp = false" />
     </template>
   </div>
+
 </template>

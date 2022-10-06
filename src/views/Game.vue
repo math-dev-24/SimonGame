@@ -47,53 +47,63 @@ function goChangeDifficulty(){
       <div
           class="w-full flex-1 m-2 p-2 bg-indigo-700 dark:bg-indigo-900 hover:bg-indigo-600 dark:hover:bg-indigo-800 text-white cursor-pointer rounded-md m-auto transition duration-300 text-center"
           v-if="!simonStore.ready"
-          @click="simonStore.newGame()"
+          @click="simonStore.newGame"
       >
         Je suis prêt !
       </div>
+      <div v-if="simonStore.canHelp && simonStore.ready"
+           @click="simonStore.helpGame"
+           class="w-full flex-1 m-2 p-2 bg-indigo-700 dark:bg-indigo-900 hover:bg-indigo-600 dark:hover:bg-indigo-800 text-white cursor-pointer rounded-md m-auto transition duration-300 text-center"
+      >
+        Aidez-moi
+      </div>
+
     </div>
 
-    <div class="score">Votre score : {{simonStore.score}}</div>
-    <div>Mode : {{userStore.difficulty}}</div>
-    <div>Vous avez {{simonStore.life}} {{simonStore.life < 2 ? "vie": "vies"}}</div>
+
+    <div id="score">
+      <div>Votre score : {{simonStore.score}}</div>
+      <div>Mode : {{userStore.difficulty}}</div>
+      <div>Vous avez {{simonStore.life}} {{simonStore.life < 2 ? "vie": "vies"}}</div>
+    </div>
+
     <div class="text-3xl text-center p-4 uppercase font-bold">
-      <div v-if="simonStore.playingSequence">Regarder bien !</div>
+      <div v-if="simonStore.playingSequence">Regardez bien !</div>
       <div v-if="!simonStore.playingSequence && simonStore.ready">Jouez !</div>
     </div>
-    <div v-if="simonStore.canHelp" class="cursor-pointer p-2 bg-indigo-700 text-white">Aidez-moi</div>
 
     <div class="m-auto">
-      <div class="flex">
+      <div class="col_cube">
         <div
             @click="simonStore.selectSquare('hautGauche')"
-            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
             :class="{'bg-emerald-700' : simonStore.hautGauche, 'dark:bg-emerald-800' : simonStore.hautGauche}"
         ></div>
         <div
             @click="simonStore.selectSquare('hautMilieu')"
-            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
             :class="{'bg-sky-600' : simonStore.hautMilieu, 'dark:bg-sky-800' : simonStore.hautMilieu}"
         ></div>
         <div
             @click="simonStore.selectSquare('hautDroit')"
-            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
             :class="{'bg-indigo-700' : simonStore.hautDroit, 'dark:bg-indigo-800' : simonStore.hautDroit}"
         ></div>
       </div>
-      <div class="flex m-auto">
+      <div class="col_cube">
         <div
             @click="simonStore.selectSquare('basGauche')"
-            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            class="cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
             :class="{'bg-amber-600' : simonStore.basGauche, 'dark:bg-amber-800' : simonStore.basGauche}"
         ></div>
         <div
             @click="simonStore.selectSquare('basMilieu')"
-            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            class="cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
             :class="{'bg-red-600' : simonStore.basMilieu, 'dark:bg-red-800' : simonStore.basMilieu}"
         ></div>
         <div
             @click="simonStore.selectSquare('basDroit')"
-            class="cursor-pointer hover:scale-105 transition duration-300 w-14 md:w-28 lg:w-40 h14 md:h-28 lg:h-40 bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
+            class="cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-300 dark:bg-slate-600 shadow-blue-300 shadow m-2"
             :class="{'bg-lime-600' : simonStore.basDroit, 'dark:bg-lime-800' : simonStore.basDroit}"
         ></div>
       </div>
@@ -105,6 +115,27 @@ function goChangeDifficulty(){
 </template>
 
 <style scoped lang="sass">
+=xl
+  @Media screen and (min-width: 800px)
+    @content
+
+.cube
+  width: 100px
+  height: 100px
+  +xl
+    width: 200px
+    height: 200px
+.col_cube
+  display: flex
+  width: 100%
+  justify-content: center
+  align-items: center
+
+#score
+  width: 50%
+  margin: 5px auto
+  text-align: center
+  font-weight: bold
 
 
 </style>

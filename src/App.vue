@@ -5,9 +5,9 @@ import ListPop from "@/components/ListPop.vue"
 <template>
   <div class="bg-slate-100 dark:bg-slate-800 w-full min-h-screen text-black dark:text-white">
     <h1 class="text-center py-6 font-bold text-2xl uppercase">Jeu de simon</h1>
-    <router-view v-slot="{ Component, route }">
+    <router-view v-slot="{ Component}">
       <Transition name="page" mode="out-in" appear>
-        <div :key="route.name" class="container m-auto">
+        <div class="container m-auto">
           <component :is="Component" />
         </div>
       </Transition>
