@@ -76,35 +76,35 @@ function goChangeDifficulty(){
       <div class="col_cube">
         <div
             @click="simonStore.selectSquare('hautGauche')"
-            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-600 shadow-blue-800 shadow m-2"
-            :class="{'bg-emerald-800' : simonStore.hautGauche}"
+            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube shadow-blue-800 shadow m-2"
+            :class="{'bg-emerald-700' : simonStore.hautGauche, 'bg-slate-600' : !simonStore.hautGauche}"
         ></div>
         <div
             @click="simonStore.selectSquare('hautMilieu')"
-            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-600 shadow-blue-800 shadow m-2"
-            :class="{'bg-sky-800' : simonStore.hautMilieu}"
+            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube shadow-blue-800 shadow m-2"
+            :class="{'bg-sky-800' : simonStore.hautMilieu, 'bg-slate-600' : !simonStore.hautMilieu}"
         ></div>
         <div
             @click="simonStore.selectSquare('hautDroit')"
-            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-600 shadow-blue-800 shadow m-2"
-            :class="{'bg-indigo-800' : simonStore.hautDroit}"
+            class="flex-initial cursor-pointer hover:scale-105 transition duration-300 cube shadow-blue-800 shadow m-2"
+            :class="{'bg-indigo-800' : simonStore.hautDroit, 'bg-slate-600' : !simonStore.hautDroit}"
         ></div>
       </div>
       <div class="col_cube">
         <div
             @click="simonStore.selectSquare('basGauche')"
-            class="cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-600 shadow-blue-800 shadow m-2"
-            :class="{'bg-amber-800' : simonStore.basGauche}"
+            class="cursor-pointer hover:scale-105 transition duration-300 cube shadow-blue-800 shadow m-2"
+            :class="{'bg-blue-700' : simonStore.basGauche, 'bg-slate-600' : !simonStore.basGauche}"
         ></div>
         <div
             @click="simonStore.selectSquare('basMilieu')"
-            class="cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-600 shadow-blue-800 shadow m-2"
-            :class="{'bg-red-800' : simonStore.basMilieu}"
+            class="cursor-pointer hover:scale-105 transition duration-300 cube shadow-blue-800 shadow m-2"
+            :class="{'bg-red-800' : simonStore.basMilieu, 'bg-slate-600' : !simonStore.basMilieu}"
         ></div>
         <div
             @click="simonStore.selectSquare('basDroit')"
             class="cursor-pointer hover:scale-105 transition duration-300 cube bg-slate-600 shadow-blue-800 shadow m-2"
-            :class="{'bg-lime-800' : simonStore.basDroit}"
+            :class="{'bg-lime-800' : simonStore.basDroit, 'bg-slate-600' : !simonStore.basDroit}"
         ></div>
       </div>
     </div>

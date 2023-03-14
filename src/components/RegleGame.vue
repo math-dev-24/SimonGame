@@ -10,9 +10,9 @@ const emit = defineEmits<{
 <template>
   <Teleport to="body">
     <div class="fixed z-30 top-0 left-0 w-full h-full  md:w-2/4 md:h-3/4 md:top-16 md:left-1/4
-                bg-indigo-400 flex content-around flex-col p-4
-                md:rounded-md dark:text-white
-                dark:bg-slate-800 md:dark:bg-slate-700"
+                flex content-around flex-col p-4
+                md:rounded-md text-white
+                bg-slate-800 md:bg-slate-700"
     >
       <h1 class="h-1/5 font-bold text-2xl text-center underline uppercase">Régle du jeu :</h1>
       <div class="h-3/5">
@@ -32,7 +32,7 @@ const emit = defineEmits<{
       <div class="h-1/5 flex content-center items-center">
         <div
             @click="emit('goClose')"
-            class=" cursor-pointer p-2 bg-emerald-700 dark:bg-emerald-900 hover:bg-emerald-500 dark:hover:bg-emerald-800 transition duration-300 text-white w-1/2 m-auto rounded-md text-center font-bold"
+            class=" cursor-pointer p-2 bg-emerald-900 hover:bg-emerald-800 transition duration-300 text-white w-1/2 m-auto rounded-md text-center font-bold"
         >
           D'accord !
         </div>
