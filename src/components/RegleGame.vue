@@ -9,15 +9,15 @@ const emit = defineEmits<{
 
 <template>
   <Teleport to="body">
-    <div class="fixed z-30 top-0 left-0 w-full h-full  md:w-2/4 md:h-3/4 md:top-16 md:left-1/4
+    <div class="fixed z-30 top-0 left-0 w-full h-full md:w-2/4 md:h-3/4 md:top-16 md:left-1/4
                 flex content-around flex-col p-4
                 md:rounded-md text-white
                 bg-slate-800 md:bg-slate-700"
     >
       <h1 class="h-1/5 font-bold text-2xl text-center underline uppercase">Régle du jeu :</h1>
       <div class="h-3/5">
-        <div class="font-bold text-center">
-          Une série d'instruction va être présenté. il faudrat la ré-excuter dans le bon Ordre !
+        <div class="text-xl font-semibold text-center">
+          Une série d'instruction va être présentée. il faudrat la ré-excuter dans le bon Ordre !
         </div>
         <div class="my-5 ml-2">
           <h3 class="font-bold underline">Différents modes :</h3>
@@ -38,7 +38,7 @@ const emit = defineEmits<{
         </div>
       </div>
     </div>
-    <div class="fixed top-0 left-0 w-full h-full bg-slate-400 opacity-40">
+    <div @click="emit('goClose')" class="fixed top-0 left-0 w-full h-full bg-slate-400 opacity-60">
 
     </div>
   </Teleport>

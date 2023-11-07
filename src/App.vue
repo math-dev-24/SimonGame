@@ -3,7 +3,7 @@ import ListPop from "@/components/ListPop.vue"
 </script>
 
 <template>
-  <div class="bg-slate-800 w-full min-h-screen text-black text-white">
+  <div class="bg-slate-800 w-full min-h-screen text-white">
     <h1 class="text-center py-6 font-bold text-2xl uppercase">Jeu de simon</h1>
     <router-view v-slot="{ Component}">
       <Transition name="page" mode="out-in" appear>

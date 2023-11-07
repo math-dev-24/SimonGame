@@ -92,18 +92,18 @@ export const useSimonStore = defineStore("simonStore",{
                         this.tmp.shift()
                         if (!this.tmp[0]){
                             const userStore = useUserStore()
-                            userStore.sendMessage("Bravo :) ", "success")
+                            userStore.sendMessage("Félicitation ! ", "success")
+                            setTimeout(() => (userStore.sendMessage("C'est reparti !", "success")), 500)
                             setTimeout(() => (this.nextTurn()), 1000)
                         }
                     }, 100)
                 }else{
-
                     this.lostGame()
                 }
             }else{
                 if (!this.ready){
                     const userStore = useUserStore()
-                    userStore.sendMessage("Click on ready button", "warning")
+                    userStore.sendMessage("Click sur le bouton ready !", "warning")
                 }
             }
         },
