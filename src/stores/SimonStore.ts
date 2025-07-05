@@ -1,6 +1,11 @@
 import { defineStore } from "pinia";
 import {useUserStore} from "@/stores/UserStore";
 
+interface StepTime {
+    step: number;
+    time: number;
+}
+
 interface SimonInterface{
     life: number,
     score: number,
@@ -16,7 +21,9 @@ interface SimonInterface{
     basMilieu : boolean,
     canHelp: boolean,
     playingSequence: boolean,
-    endGame: boolean
+    endGame: boolean,
+    stepTimes: StepTime[],
+    currentStepStartTime: number
 }
 
 const squareMapping = ["hautGauche","hautMilieu","hautDroit","basGauche","basMilieu","basDroit"]
@@ -38,7 +45,9 @@ export const useSimonStore = defineStore("simonStore",{
         basMilieu : false,
         canHelp: false,
         playingSequence: false,
-        endGame: false
+        endGame: false,
+        stepTimes: [],
+        currentStepStartTime: 0
     }),
     actions: {
         newGame(){
@@ -46,6 +55,7 @@ export const useSimonStore = defineStore("simonStore",{
             userStore.sendMessage("C'est partie !", "success")
             this.ready = true
             this.sequence = [];
+            this.stepTimes = [];
             this.nextTurn();
         },
         nextTurn(){
@@ -79,6 +89,7 @@ export const useSimonStore = defineStore("simonStore",{
                 }else{
                     this.tmp = this.sequence.slice()
                     this.playingSequence = false
+                    this.currentStepStartTime = Date.now();
                 }
             },this.timer)
         },
@@ -91,6 +102,12 @@ export const useSimonStore = defineStore("simonStore",{
                         this.allGray()
                         this.tmp.shift()
                         if (!this.tmp[0]){
+                            const stepTime = Date.now() - this.currentStepStartTime;
+                            this.stepTimes.push({
+                                step: this.score,
+                                time: stepTime
+                            });
+                            
                             const userStore = useUserStore()
                             userStore.sendMessage("Félicitation ! ", "success")
                             setTimeout(() => (userStore.sendMessage("C'est reparti !", "success")), 500)
@@ -131,6 +148,40 @@ export const useSimonStore = defineStore("simonStore",{
             if (this.score > 10){
                 this.timer = this.timer * 0.8
             }
+            if (this.score > 20){
+                this.timer = this.timer * 0.7
+            }
+            if (this.score > 30){
+                this.timer = this.timer * 0.6
+            }
+            if (this.score > 40){
+                this.timer = this.timer * 0.5
+            }
+            if (this.score > 50){
+                this.timer = this.timer * 0.4
+            }
+            if (this.score > 60){
+                this.timer = this.timer * 0.3
+            }
+            if (this.score > 70){
+                this.timer = this.timer * 0.2
+            }
         },
+        getStepTimesStats() {
+            if (this.stepTimes.length === 0) return null;
+            
+            const times = this.stepTimes.map(step => step.time);
+            const average = times.reduce((sum, time) => sum + time, 0) / times.length;
+            const min = Math.min(...times);
+            const max = Math.max(...times);
+            
+            return {
+                totalSteps: this.stepTimes.length,
+                averageTime: Math.round(average),
+                minTime: min,
+                maxTime: max,
+                stepTimes: this.stepTimes
+            };
+        }
     }
 })
