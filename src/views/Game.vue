@@ -70,19 +70,6 @@ const difficultyColors = {
         </router-link>
 
         <button
-          v-if="!simonStore.ready"
-          @click="simonStore.newGame"
-          class="flex-1 group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
-        >
-          <div class="p-4 text-center">
-            <div class="flex items-center justify-center gap-2 text-white font-bold text-lg">
-              <span>🚀</span>
-              Je suis prêt !
-            </div>
-          </div>
-        </button>
-
-        <button
           v-if="simonStore.canHelp && simonStore.ready"
           @click="simonStore.helpGame"
           class="flex-1 group relative overflow-hidden rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105"
@@ -298,6 +285,25 @@ const difficultyColors = {
     <div v-if="simonStore.endGame">
       <EndGame :score="simonStore.score" @go-restart="goRestartGame" @go-change-difficulty="goChangeDifficulty"/>
     </div>
+
+    <Teleport to="body" v-if="!simonStore.ready">
+          <div class="fixed top-0 left-0 z-50 w-full h-full bg-black/70"></div>
+          <div class="fixed top-0 left-0 z-50 w-2/4 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center bg-slate-400 rounded-2xl">
+
+            <button
+            @click="simonStore.newGame"
+            class="cursor-pointer flex-1 group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
+          >
+            <div class="p-4 text-center">
+              <div class="flex items-center justify-center gap-2 text-white font-bold text-lg">
+                <span>🚀</span>
+                Je suis prêt !
+              </div>
+            </div>
+          </button>
+          </div>
+
+      </Teleport>
   </div>
 </template>
 
